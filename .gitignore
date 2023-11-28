@@ -1,0 +1,7 @@
+overlay/boot/Image
+overlay/boot/vmlinuz-*
+overlay/boot/config-*
+overlay/boot/System.map-*
+overlay/boot/dtbs/*
+overlay/usr/lib/modules/*
+build/*

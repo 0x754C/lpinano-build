@@ -1,0 +1,65 @@
+From ae155a1e353c662f19a424f41d88d93a6b450f0e Mon Sep 17 00:00:00 2001
+From: Lu Hui <luhui@sipeed.com>
+Date: Tue, 28 Nov 2023 16:28:19 +0800
+Subject: [PATCH 6/6] licheepi-nano: enable usb gadget acm
+
+---
+ board/sunxi/board.c             | 22 ++++++++++++++++++++++
+ configs/licheepi_nano_defconfig |  7 +++++++
+ 2 files changed, 29 insertions(+)
+
+diff --git a/board/sunxi/board.c b/board/sunxi/board.c
+index 8c12c8dead..2140e570b7 100644
+--- a/board/sunxi/board.c
++++ b/board/sunxi/board.c
+@@ -843,10 +843,32 @@ int misc_init_r(void)
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_USB_GADGET
++int usb_gadget_init(void)
++{
++	struct udevice *usb_dev;
++
++	uclass_first_device(UCLASS_USB_GADGET_GENERIC, &usb_dev);
++	if (!usb_dev) {
++		pr_err("No USB device found\n");
++		return -ENODEV;
++	}
++	// now we can access uboot from usb
++	env_set("stdin", "usbacm");
++	env_set("stdout", "usbacm");
++	env_set("stderr", "usbacm");
++
++	return 0;
++}
++#endif
++
++
+ int board_late_init(void)
+ {
+ #ifdef CONFIG_USB_ETHER
+ 	usb_ether_init();
++#elif CONFIG_USB_GADGET
++	usb_gadget_init();
+ #endif
+ 
+ 	return 0;
+diff --git a/configs/licheepi_nano_defconfig b/configs/licheepi_nano_defconfig
+index 06eb4008be..e1ec95be79 100644
+--- a/configs/licheepi_nano_defconfig
++++ b/configs/licheepi_nano_defconfig
+@@ -12,3 +12,10 @@ CONFIG_SPL_SPI_SUNXI=y
+ CONFIG_SPI_FLASH_WINBOND=y
+ CONFIG_SPI_FLASH_XTX=y
+ CONFIG_SPI=y
++CONFIG_USB_MUSB_GADGET=y
++CONFIG_USB_MUSB_SUNXI=y
++CONFIG_USB_GADGET_DOWNLOAD=y
++CONFIG_USB_FUNCTION_ACM=y
++# CONFIG_USB_ETHER is not set
++CONFIG_SYS_CONSOLE_IS_IN_ENV=y
++CONFIG_SYS_CONSOLE_ENV_OVERWRITE=y
+-- 
+2.34.1
+

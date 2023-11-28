@@ -1,0 +1,55 @@
+From 46b6a333c71e9314459fcabda949f3c1e7183708 Mon Sep 17 00:00:00 2001
+From: Lu Hui <luhui@sipeed.com>
+Date: Tue, 28 Nov 2023 16:27:56 +0800
+Subject: [PATCH 5/6] suniv-f1c100s-licheepi-nano: enable spi1
+
+---
+ arch/arm/dts/suniv-f1c100s-licheepi-nano.dts | 15 +++++++++++++++
+ arch/arm/dts/suniv-f1c100s.dtsi              |  5 +++++
+ 2 files changed, 20 insertions(+)
+
+diff --git a/arch/arm/dts/suniv-f1c100s-licheepi-nano.dts b/arch/arm/dts/suniv-f1c100s-licheepi-nano.dts
+index 43896723a9..a33192a521 100644
+--- a/arch/arm/dts/suniv-f1c100s-licheepi-nano.dts
++++ b/arch/arm/dts/suniv-f1c100s-licheepi-nano.dts
+@@ -52,6 +52,21 @@
+ 	};
+ };
+ 
++&spi1 {
++        pinctrl-names = "default";
++        pinctrl-0 = <&spi1_pa_pins>;
++        status = "okay";
++
++        flash@0 {
++                #address-cells = <1>;
++                #size-cells = <1>;
++                compatible = "jedec,spi-nor";
++                reg = <0>;
++                spi-max-frequency = <1000000>;
++        };
++};
++
++
+ &otg_sram {
+ 	status = "okay";
+ };
+diff --git a/arch/arm/dts/suniv-f1c100s.dtsi b/arch/arm/dts/suniv-f1c100s.dtsi
+index a0218763a3..0424ddec0d 100644
+--- a/arch/arm/dts/suniv-f1c100s.dtsi
++++ b/arch/arm/dts/suniv-f1c100s.dtsi
+@@ -204,6 +204,11 @@
+ 				function = "spi0";
+ 			};
+ 
++			spi1_pa_pins: spi1-pa-pins {
++				pins = "PA0", "PA1", "PA2", "PA3";
++				function = "spi1";
++			};
++
+ 			uart0_pe_pins: uart0-pe-pins {
+ 				pins = "PE0", "PE1";
+ 				function = "uart0";
+-- 
+2.34.1
+

@@ -1,0 +1,26 @@
+From e48e7982ee0125ea2c4e10887ba55f826959e980 Mon Sep 17 00:00:00 2001
+From: Lu Hui <luhux76@gmail.com>
+Date: Thu, 20 Jul 2023 21:21:56 +0800
+Subject: [PATCH 3/6] configs/licheepi_nano_defconfig: store env data in spi
+ nor flash
+
+---
+ configs/licheepi_nano_defconfig | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/configs/licheepi_nano_defconfig b/configs/licheepi_nano_defconfig
+index b25c9ba77c..06eb4008be 100644
+--- a/configs/licheepi_nano_defconfig
++++ b/configs/licheepi_nano_defconfig
+@@ -5,6 +5,8 @@ CONFIG_SPL=y
+ CONFIG_MACH_SUNIV=y
+ CONFIG_DRAM_CLK=156
+ CONFIG_DRAM_ZQ=0
++# CONFIG_ENV_IS_IN_FAT is not set
++CONFIG_ENV_IS_IN_SPI_FLASH=y
+ # CONFIG_VIDEO_SUNXI is not set
+ CONFIG_SPL_SPI_SUNXI=y
+ CONFIG_SPI_FLASH_WINBOND=y
+-- 
+2.34.1
+
